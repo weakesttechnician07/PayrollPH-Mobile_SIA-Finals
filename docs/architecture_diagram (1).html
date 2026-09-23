@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PayrollPH – System Architecture Diagram</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0f1117; font-family: 'Segoe UI', Arial, sans-serif; color: #e8eaf0; padding: 32px; }
+  h1 { text-align: center; font-size: 22px; font-weight: 700; color: #e94560; margin-bottom: 4px; }
+  .subtitle { text-align: center; font-size: 12px; color: #8892a4; margin-bottom: 32px; }
+
+  .diagram { display: flex; gap: 0; align-items: stretch; justify-content: center; margin-bottom: 32px; }
+
+  /* ── Layers ── */
+  .layer { display: flex; flex-direction: column; align-items: center; }
+  .layer-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #8892a4; margin-bottom: 12px; text-align: center; }
+
+  /* ── Connectors ── */
+  .connector { display: flex; align-items: center; justify-content: center; width: 80px; flex-shrink: 0; }
+  .arrow-wrap { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .arrow-line { width: 60px; height: 2px; background: #2a3a5c; position: relative; }
+  .arrow-line::after { content: ''; position: absolute; right: -1px; top: -4px; border: 5px solid transparent; border-left-color: #e94560; }
+  .arrow-line.both::before { content: ''; position: absolute; left: -1px; top: -4px; border: 5px solid transparent; border-right-color: #e94560; }
+  .arrow-label { font-size: 9px; color: #e94560; font-weight: 600; text-align: center; line-height: 1.3; }
+
+  /* ── Boxes ── */
+  .box { border-radius: 10px; border: 1.5px solid #2a3a5c; background: #1a2744; padding: 14px 16px; margin-bottom: 10px; min-width: 160px; text-align: center; }
+  .box:last-child { margin-bottom: 0; }
+  .box-icon { font-size: 24px; margin-bottom: 6px; }
+  .box-name { font-size: 13px; font-weight: 700; color: #e8eaf0; margin-bottom: 3px; }
+  .box-tech { font-size: 10px; color: #8892a4; }
+  .box.accent { border-color: #e94560; }
+  .box.green  { border-color: #2ecc71; }
+  .box.blue   { border-color: #4a9eff; }
+  .box.purple { border-color: #a29bfe; }
+  .box.orange { border-color: #f39c12; }
+
+  /* ── Sub items ── */
+  .box-items { margin-top: 8px; text-align: left; }
+  .box-item { font-size: 9px; color: #8892a4; padding: 2px 0; display: flex; align-items: center; gap: 4px; }
+  .box-item::before { content: '•'; color: #e94560; }
+
+  /* ── DB tables ── */
+  .db-wrap { display: flex; flex-direction: column; gap: 8px; }
+  .db-group { border: 1px solid #2a3a5c; border-radius: 8px; padding: 10px; background: #16213e; min-width: 160px; }
+  .db-group-title { font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #e94560; margin-bottom: 6px; }
+  .db-table { font-size: 10px; color: #e8eaf0; padding: 2px 0; }
+
+  /* ── Legend ── */
+  .legend { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 16px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 10px; color: #8892a4; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+  /* ── Footer note ── */
+  .note { text-align: center; font-size: 11px; color: #8892a4; margin-top: 20px; }
+  .note span { color: #e94560; }
+</style>
+</head>
+<body>
+
+<h1>PayrollPH – System Architecture Diagram</h1>
+<div class="subtitle">IT221 Information Management + Web Systems · IT224 Systems Integration and Architecture · Laravel 12 · Flutter</div>
+
+<div class="diagram">
+
+  <!-- ── Layer 1: Mobile Client ── -->
+  <div class="layer">
+    <div class="layer-label">Mobile Client</div>
+    <div class="box accent">
+      <div class="box-icon">📱</div>
+      <div class="box-name">Flutter App</div>
+      <div class="box-tech">Dart · Material 3</div>
+      <div class="box-items">
+        <div class="box-item">Login Screen</div>
+        <div class="box-item">Dashboard</div>
+        <div class="box-item">Employees (CRUD)</div>
+        <div class="box-item">Process Payroll</div>
+        <div class="box-item">Payroll History</div>
+        <div class="box-item">Data Warehouse</div>
+        <div class="box-item">User Access</div>
+      </div>
+    </div>
+    <div class="box blue" style="min-width:160px;">
+      <div class="box-icon">🌐</div>
+      <div class="box-name">Browser</div>
+      <div class="box-tech">PHP Web App (XAMPP)</div>
+      <div class="box-items">
+        <div class="box-item">Bootstrap 5 UI</div>
+        <div class="box-item">Session auth</div>
+        <div class="box-item">All 7 pages</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Connector 1 ── -->
+  <div class="connector">
+    <div class="arrow-wrap">
+      <div class="arrow-label">REST API<br>JSON<br>HTTP/S</div>
+      <div class="arrow-line both"></div>
+      <div class="arrow-label">Bearer<br>Token<br>(Sanctum)</div>
+    </div>
+  </div>
+
+  <!-- ── Layer 2: API Layer ── -->
+  <div class="layer">
+    <div class="layer-label">API Layer (Laravel)</div>
+    <div class="box green">
+      <div class="box-icon">⚙️</div>
+      <div class="box-name">Laravel 12</div>
+      <div class="box-tech">PHP 8 · Sanctum</div>
+      <div class="box-items">
+        <div class="box-item">AuthController</div>
+        <div class="box-item">DashboardController</div>
+        <div class="box-item">EmployeeController</div>
+        <div class="box-item">PayrollController</div>
+        <div class="box-item">WarehouseController</div>
+        <div class="box-item">UserController</div>
+        <div class="box-item">AttendanceController</div>
+        <div class="box-item">BenefitsController</div>
+        <div class="box-item">RequestController</div>
+      </div>
+    </div>
+    <div class="box purple">
+      <div class="box-icon">🔒</div>
+      <div class="box-name">Auth Middleware</div>
+      <div class="box-tech">auth:sanctum</div>
+      <div class="box-items">
+        <div class="box-item">Token validation</div>
+        <div class="box-item">Role checking (Admin/Manager/Employee)</div>
+        <div class="box-item">CORS headers</div>
+      </div>
+    </div>
+    <div class="box orange">
+      <div class="box-icon">🔗</div>
+      <div class="box-name">40 REST Endpoints</div>
+      <div class="box-tech">routes/api.php</div>
+      <div class="box-items">
+        <div class="box-item">POST /login, /logout</div>
+        <div class="box-item">GET/POST/PUT/DELETE /employees</div>
+        <div class="box-item">GET/POST /payroll/*</div>
+        <div class="box-item">GET/POST /warehouse/*</div>
+        <div class="box-item">GET/POST/PUT/DELETE /users</div>
+        <div class="box-item">GET/POST/PUT /attendance</div>
+        <div class="box-item">GET/POST/PUT /requests</div>
+        <div class="box-item">GET /benefits, /benefits/all</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Connector 2 ── -->
+  <div class="connector">
+    <div class="arrow-wrap">
+      <div class="arrow-label">PDO<br>SQL<br>Queries</div>
+      <div class="arrow-line both"></div>
+      <div class="arrow-label">Result<br>Sets<br>JSON</div>
+    </div>
+  </div>
+
+  <!-- ── Layer 3: Database ── -->
+  <div class="layer">
+    <div class="layer-label">Database (MySQL 8)</div>
+    <div class="db-wrap">
+      <div class="db-group">
+        <div class="db-group-title">🏗 OLTP Tables</div>
+        <div class="db-table">📋 departments</div>
+        <div class="db-table">📋 positions</div>
+        <div class="db-table">👤 employees (version col)</div>
+        <div class="db-table">💰 pay_components</div>
+        <div class="db-table">📊 payroll_records</div>
+        <div class="db-table">🔐 users (bcrypt)</div>
+        <div class="db-table">📝 audit_log</div>
+        <div class="db-table">📅 attendance</div>
+        <div class="db-table">📨 requests</div>
+        <div class="db-table">🔑 personal_access_tokens</div>
+      </div>
+      <div class="db-group" style="border-color:#e94560;">
+        <div class="db-group-title" style="color:#a29bfe;">⭐ Star Schema (DWH)</div>
+        <div class="db-table">📊 fact_payroll (FACT)</div>
+        <div class="db-table">📅 dim_date</div>
+        <div class="db-table">👤 dim_employee</div>
+        <div class="db-table">🏢 dim_department</div>
+      </div>
+      <div class="db-group">
+        <div class="db-group-title">👁 Views</div>
+        <div class="db-table">vw_payroll_detail (JOIN)</div>
+        <div class="db-table">vw_dept_payroll_summary</div>
+        <div class="db-table">vw_payroll_ranking (RANK)</div>
+        <div class="db-table">vw_audit_log</div>
+        <div class="db-table">vw_payroll_preview</div>
+        <div class="db-table">vw_requests</div>
+        <div class="db-table">vw_employee_benefits</div>
+      </div>
+      <div class="db-group">
+        <div class="db-group-title">⚙️ Stored Procedure</div>
+        <div class="db-table">sp_run_etl() — ETL process</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── Legend ── -->
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#e94560;"></div> Flutter Mobile App</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#4a9eff;"></div> PHP Web App (existing)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#2ecc71;"></div> Laravel REST API</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#a29bfe;"></div> Security Middleware</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#f39c12;"></div> API Endpoints</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#8892a4;"></div> MySQL Database</div>
+</div>
+
+<div class="note">
+  <strong>Integration:</strong> Flutter → <span>Bearer Token (Sanctum)</span> → Laravel API → <span>PDO / Eloquent</span> → MySQL |
+  Web App → <span>PHP Session</span> → MySQL (same DB)
+</div>
+
+</body>
+</html>
